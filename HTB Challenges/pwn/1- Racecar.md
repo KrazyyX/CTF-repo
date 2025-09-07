@@ -27,6 +27,7 @@ checksec <binary>
 for the `racecar` binary, we see the following:
 
 ![](assets/Racecar.png)
+
 All protections seem to be enabled.
 
 Note: `Stripped: No` means that the symbol table & debugging info is still there, making it easier to reverse engineer.
@@ -48,6 +49,7 @@ a `32-bit` binary. (Might be useful info later, I am not sure).
 
 When we run the function, we see the following:
 ![](assets/Racecar-2.png)
+
 We were requested to input a name and a nickname.
 
 Next, we have the option to choose between car info and car selection. Car info shows the following:
@@ -83,7 +85,9 @@ Click `yes` to analyze the binary file.
 Once in, you will see the Assembly of the binary file. We are interested in the C pseudo code.
 
 To access it, we click on the `Functions` folder under the Symbol Tree, on the left panel.
+
 ![](assets/Racecar-5.png)
+
 
 We will see a `main` function which should have our C code.
 
@@ -97,6 +101,7 @@ We are mainly interested in the `car menu` function, since that is what gives us
 by double clicking it, we can see the `car_menu` function.
 
 Within it, we see 2 interesting things.
+
 ![](assets/Racecar-8.png)
 
 In line 70, it looks for a `flag.txt` file to read from. by writing whatever inside it, we can avoid the error seen prior.
@@ -126,6 +131,7 @@ Link [Here](https://owasp.org/www-community/attacks/Format_string_attack).
 # Exploitation.
 
 after creating the `flag.txt`, we can attempt to run the binary and input `%p` when prompted.
+
 ![](assets/Racecar-9.png)
 
 This gets us the following string:
