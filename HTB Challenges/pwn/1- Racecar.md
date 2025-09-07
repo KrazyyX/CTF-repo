@@ -25,7 +25,8 @@ checksec <binary>
 ```
 
 for the `racecar` binary, we see the following:
-![[Racecar.png]]
+
+![](HTB%20Challenges/pwn/assets/Racecar.png)
 All protections seem to be enabled.
 
 Note: `Stripped: No` means that the symbol table & debugging info is still there, making it easier to reverse engineer.
@@ -38,22 +39,25 @@ A `Symbol table` is a list that maps names (func. names, variables, etc) to thei
 `file <filename>`: a command that tells use what type of file `<filename>` is.
 
 running `file racecar`, we get the following:
-![[Racecar-1.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-1.png)
+
 
 a `32-bit` binary. (Might be useful info later, I am not sure).
 
 ## Step 3: Binary Interface
 
 When we run the function, we see the following:
-![[Racecar-2.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-2.png)
 We were requested to input a name and a nickname.
 
 Next, we have the option to choose between car info and car selection. Car info shows the following:
 
-![[Racecar-3.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-3.png)
+
 
 Car selection allows us to select one of the two cars, then makes us choose a race track
-![[Racecar-4.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-4.png)
+
 
 Next, we can open the progam with ghidra for further analysis.
 According to the writeup, there is a `Format String Bug` at the end.
@@ -79,19 +83,22 @@ Click `yes` to analyze the binary file.
 Once in, you will see the Assembly of the binary file. We are interested in the C pseudo code.
 
 To access it, we click on the `Functions` folder under the Symbol Tree, on the left panel.
-![[Racecar-5.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-5.png)
+
 We will see a `main` function which should have our C code.
 
 Once selected, we see our C code in the `Decompile` window, on the right panel.
 
-![[Racecar-7.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-7.png)
+
 This is the main function.
 
 We are mainly interested in the `car menu` function, since that is what gives us the hint about `flag.txt`.
 by double clicking it, we can see the `car_menu` function.
 
 Within it, we see 2 interesting things.
-![[Racecar-8.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-8.png)
+
 In line 70, it looks for a `flag.txt` file to read from. by writing whatever inside it, we can avoid the error seen prior.
 
 According to the writeup, it would be better to write something with easily identifiable hex chars, like `AAAAA`.
@@ -119,7 +126,8 @@ Link [Here](https://owasp.org/www-community/attacks/Format_string_attack).
 # Exploitation.
 
 after creating the `flag.txt`, we can attempt to run the binary and input `%p` when prompted.
-![[Racecar-9.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-9.png)
+
 This gets us the following string:
 	**0x574361c0 0x170 0x56555d85 0x1 0x5e 0x26 0x1 0x2 0x5655696c 0x574361c0 0x57436340 0x7b425448 0x5f796877 0x5f643164 0x34735f31 0x745f3376 0x665f3368 0x5f67346c 0x745f6e30 0x355f3368 0x6b633474 0x7d213f 0xf149d800 0xf7f9e3fc 0x56558f8c 0xfffe9b38 0x56556441 0x1 0xfffe9be4 0xfffe9bec**
 
@@ -129,7 +137,8 @@ Writeup: [Link](https://blog.x3ric.com/posts/HackTheBox-RaceCar-Challenge/)
 
 Which does everything for you. It decodes the hex string.
 
-![[Racecar-10.png]]
+![](HTB%20Challenges/pwn/assets/Racecar-10.png)
+
 Flag found.
 ### Post Solution - Learning to decode
 
@@ -181,5 +190,3 @@ In this, some operations are crucial.
 1. Decode this using `python`.
 2. Solve this using my own script.
 3. Learn more about `pwntools` and `ghidra`.
-
-
