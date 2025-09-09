@@ -61,7 +61,7 @@ However, even though my deduction was okay, this answer was not correct.
 
 I will take a look at the writeup to check if I am on the right track.
 
-After checking the writeup, the issue seems to be with the type of data that the variables are said to be.
+After checking the writeup, the issue seems to be that `long` is not the data type to be concerned with.
 
 The correct values were as follows
 
